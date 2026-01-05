@@ -1238,7 +1238,7 @@ function openOverlay(src) {
       ↺
     </button>
     <div class="overlay-hint">
-      ピンチで拡大・縮小 ╱ ダブルタップでズーム ╱ ドラッグで移動
+      ピンチで拡大・縮可 ╱ ダブルタップでズーム ╱ ドラッグで移動
     </div>
     <div class="zoom-indicator"></div>
   `;
@@ -2137,6 +2137,89 @@ function renderStepView(s) {
     </div>`;
 }
 
+// ================= アルバム機能 =================
+function savePhoto(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const workName = prompt("工作の「なまえ」を教えてね！\n（例：はじめての電気自動車）", "じぶんの工作");
+  if (workName === null) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const savedPhotos = JSON.parse(localStorage.getItem('myAlbumV3') || '[]');
+    const newItem = {
+      dataUrl: e.target.result,
+      name: workName,
+      timestamp: Date.now()
+    };
+    savedPhotos.push(newItem);
+    localStorage.setItem('myAlbumV3', JSON.stringify(savedPhotos));
+    render();
+    
+    alert(`🎉 「${workName}」をアルバムに保存しました！`);
+  };
+  reader.readAsDataURL(file);
+}
+
+// ================= カメラ撮影関数（新規追加） =================
+function takePhoto() {
+  const workName = prompt("工作の「なまえ」を教えてね！\n（例：はじめての電気自動車）", "じぶんの工作");
+  if (workName === null) return;
+
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = 'image/*';
+  
+  // デバイスに応じたカメラ設定
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  if (isMobile) {
+    input.capture = 'environment'; // スマホは背面カメラ
+  } else {
+    input.capture = 'user'; // PC/タブレットは前面カメラ
+  }
+  
+  input.onchange = function(e) {
+    const file = e.target.files[0];
+    if (!file) {
+      console.log('写真が選択されませんでした');
+      return;
+    }
+    
+    // ファイルの検証
+    if (!file.type.startsWith('image/')) {
+      alert('画像ファイルを選択してください。');
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const savedPhotos = JSON.parse(localStorage.getItem('myAlbumV3') || '[]');
+      const newItem = {
+        dataUrl: e.target.result,
+        name: workName,
+        timestamp: Date.now()
+      };
+      savedPhotos.push(newItem);
+      localStorage.setItem('myAlbumV3', JSON.stringify(savedPhotos));
+      render();
+      
+      alert(`🎉 「${workName}」をアルバムに保存しました！`);
+    };
+    reader.readAsDataURL(file);
+  };
+  
+  input.click();
+}
+
+function deletePhoto(timestamp) {
+  if (!confirm('この写真をアルバムから削除してもいいですか？')) return;
+  let savedPhotos = JSON.parse(localStorage.getItem('myAlbumV3') || '[]');
+  savedPhotos = savedPhotos.filter(item => item.timestamp !== timestamp);
+  localStorage.setItem('myAlbumV3', JSON.stringify(savedPhotos));
+  render();
+}
+
 function renderAlbumView(s) {
   let savedPhotos = JSON.parse(localStorage.getItem('myAlbumV3') || '[]');
   savedPhotos.sort((a, b) => b.timestamp - a.timestamp);
@@ -2198,8 +2281,7 @@ function renderAlbumView(s) {
           ${albumMessage}
         </p>
         
-        <input type="file" id="cameraInput" accept="image/*" style="display:none;" onchange="savePhoto(event)">
-        <button class="add-photo-btn" onclick="document.getElementById('cameraInput').click()">
+        <button class="add-photo-btn" onclick="takePhoto()">
           <span>📷</span>
           <span>写真をとる・えらぶ</span>
         </button>
@@ -2207,39 +2289,6 @@ function renderAlbumView(s) {
         ${albumCount > 0 ? `<div class="album-grid">${albumHtml}</div>` : ''}
       </div>
     </div>`;
-}
-
-// ================= アルバム機能 =================
-function savePhoto(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-
-  const workName = prompt("工作の「なまえ」を教えてね！\n（例：はじめての電気自動車）", "じぶんの工作");
-  if (workName === null) return;
-
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const savedPhotos = JSON.parse(localStorage.getItem('myAlbumV3') || '[]');
-    const newItem = {
-      dataUrl: e.target.result,
-      name: workName,
-      timestamp: Date.now()
-    };
-    savedPhotos.push(newItem);
-    localStorage.setItem('myAlbumV3', JSON.stringify(savedPhotos));
-    render();
-    
-    alert(`🎉 「${workName}」をアルバムに保存しました！`);
-  };
-  reader.readAsDataURL(file);
-}
-
-function deletePhoto(timestamp) {
-  if (!confirm('この写真をアルバムから削除してもいいですか？')) return;
-  let savedPhotos = JSON.parse(localStorage.getItem('myAlbumV3') || '[]');
-  savedPhotos = savedPhotos.filter(item => item.timestamp !== timestamp);
-  localStorage.setItem('myAlbumV3', JSON.stringify(savedPhotos));
-  render();
 }
 
 // ================= 初期化 =================

@@ -381,7 +381,7 @@ function renderTeamSummary() {
   const completionRate = Math.round((completedSteps / totalSteps) * 100) || 0;
   
   // 仮想的なチームデータ（実際の実装ではサーバーから取得）
-  const teamMembers = 3; // 仮の参加者数
+  const teamMembers = 4; // 仮の参加者数
   const teamCompleted = Math.round(teamMembers * (completionRate / 100));
   
   teamSummary.innerHTML = `

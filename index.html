@@ -85,13 +85,101 @@ body { font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "游ゴシッ�
 .tips-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
 .tips-text { flex: 1; line-height: 1.4; }
 
+/* 写真参考セクション */
+.photo-section { 
+  background: #f8f9fa; 
+  border-radius: 12px; 
+  padding: 16px; 
+  margin: 20px 0 25px 0; 
+  border: 1px solid #e0e0e0; 
+}
+.photo-title { 
+  font-size: 1.1rem; 
+  color: #1565C0; 
+  margin-bottom: 15px; 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+  font-weight: 600; 
+}
+
+.photo-list { display: flex; flex-direction: column; gap: 15px; }
+.photo-container { 
+  background: white; 
+  border-radius: 10px; 
+  overflow: hidden; 
+  border: 2px solid #e3f2fd; 
+  position: relative; 
+  cursor: pointer; 
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.photo-container:hover { 
+  transform: translateY(-2px); 
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
+}
+.step-image { 
+  width: 100%; 
+  height: auto; 
+  max-height: 50vh; 
+  object-fit: contain; 
+  display: block; 
+}
+.tap-label { 
+  position: absolute; 
+  bottom: 10px; 
+  right: 10px; 
+  background: rgba(0,0,0,0.75); 
+  color: white; 
+  padding: 6px 10px; 
+  border-radius: 15px; 
+  font-size: 0.85rem; 
+  pointer-events: none; 
+}
+
 /* 子ども用完了エリア */
-.kids-complete-area { background: linear-gradient(135deg, #e3f2fd, #bbdefb); border-radius: 15px; padding: 20px; margin: 20px 0; text-align: center; border: 3px dashed #2196F3; }
-.kids-title { font-size: 1.4rem; color: #0d47a1; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.kids-complete-area { 
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb); 
+  border-radius: 15px; 
+  padding: 20px; 
+  margin: 10px 0 20px 0; 
+  text-align: center; 
+  border: 3px dashed #2196F3; 
+}
+.kids-title { 
+  font-size: 1.4rem; 
+  color: #0d47a1; 
+  margin-bottom: 15px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 10px; 
+}
 
 /* 子ども用大型ボタン */
-.big-kids-button { background: linear-gradient(135deg, #4CAF50, #2E7D32); color: white; border: none; padding: 25px; border-radius: 20px; font-size: 1.8rem; font-weight: bold; cursor: pointer; width: 100%; max-width: 400px; transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; margin: 0 auto; }
-.big-kids-button:hover, .big-kids-button:focus { background: linear-gradient(135deg, #3d8b40, #1b5e20); transform: translateY(-3px) scale(1.02); box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4); }
+.big-kids-button { 
+  background: linear-gradient(135deg, #4CAF50, #2E7D32); 
+  color: white; 
+  border: none; 
+  padding: 25px; 
+  border-radius: 20px; 
+  font-size: 1.8rem; 
+  font-weight: bold; 
+  cursor: pointer; 
+  width: 100%; 
+  max-width: 400px; 
+  transition: all 0.3s ease; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 15px; 
+  margin: 0 auto; 
+}
+.big-kids-button:hover, .big-kids-button:focus { 
+  background: linear-gradient(135deg, #3d8b40, #1b5e20); 
+  transform: translateY(-3px) scale(1.02); 
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4); 
+}
 .big-kids-button:active { transform: translateY(-1px) scale(0.98); }
 .big-kids-button:focus { outline: 4px solid #FF9800; outline-offset: 3px; }
 .big-kids-button .big-emoji { font-size: 3rem; }
@@ -116,37 +204,203 @@ body { font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "游ゴシッ�
 .counter-fill { height: 100%; background: linear-gradient(90deg, #4CAF50, #8BC34A); transition: width 0.5s ease; border-radius: 6px; }
 
 /* 全員完了メッセージ */
-.all-complete-message { background: linear-gradient(135deg, #FFF9C4, #FFECB3); border: 3px solid #FFD600; border-radius: 12px; padding: 15px; margin-top: 20px; text-align: center; animation: gentlePulse 2s infinite; }
-.all-complete-message h3 { color: #FF6F00; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
-.next-step-btn { background: linear-gradient(135deg, #FF9800, #F57C00); color: white; border: none; padding: 12px 24px; border-radius: 25px; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-top: 10px; display: inline-flex; align-items: center; gap: 8px; }
+.all-complete-message { 
+  background: linear-gradient(135deg, #FFF9C4, #FFECB3); 
+  border: 3px solid #FFD600; 
+  border-radius: 12px; 
+  padding: 15px; 
+  margin-top: 20px; 
+  text-align: center; 
+  animation: gentlePulse 2s infinite; 
+}
+.all-complete-message h3 { 
+  color: #FF6F00; 
+  margin-bottom: 10px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 10px; 
+}
+.next-step-btn { 
+  background: linear-gradient(135deg, #FF9800, #F57C00); 
+  color: white; 
+  border: none; 
+  padding: 12px 24px; 
+  border-radius: 25px; 
+  font-size: 1.2rem; 
+  font-weight: bold; 
+  cursor: pointer; 
+  margin-top: 10px; 
+  display: inline-flex; 
+  align-items: center; 
+  gap: 8px; 
+}
 
 /* 指導員用メモ */
-.teacher-note { background: #FFF3E0; border-radius: 10px; padding: 12px; margin: 15px 0; border-left: 4px solid #FF9800; font-size: 0.95rem; color: #5D4037; }
+.teacher-note { 
+  background: #FFF3E0; 
+  border-radius: 10px; 
+  padding: 12px; 
+  margin: 15px 0; 
+  border-left: 4px solid #FF9800; 
+  font-size: 0.95rem; 
+  color: #5D4037; 
+}
 .teacher-note strong { color: #E65100; }
 
-/* 写真参考セクション */
-.photo-section { background: #f8f9fa; border-radius: 12px; padding: 12px; margin-top: 10px; border: 1px solid #e0e0e0; }
-.photo-title { font-size: 1rem; color: #546e7a; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; font-weight: 600; }
-
-.photo-list { display: flex; flex-direction: column; gap: 12px; }
-.photo-container { background: white; border-radius: 8px; overflow: hidden; border: 2px solid #e3f2fd; position: relative; cursor: pointer; }
-.step-image { width: 100%; height: auto; max-height: 40vh; object-fit: contain; display: block; }
-.tap-label { position: absolute; bottom: 6px; right: 6px; background: rgba(0,0,0,0.75); color: white; padding: 5px 8px; border-radius: 12px; font-size: 0.8rem; }
-
 /* アルバム */
-.album-section { background: #f8f9fa; border-radius: 12px; padding: 12px; margin-top: 15px; border: 2px dashed #bbdefb; }
+.album-section { 
+  background: #f8f9fa; 
+  border-radius: 12px; 
+  padding: 12px; 
+  margin-top: 15px; 
+  border: 2px dashed #bbdefb; 
+}
 
-.album-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-top: 15px; }
-.album-item { position: relative; border-radius: 8px; overflow: hidden; background: white; box-shadow: 0 2px 6px rgba(0,0,0,0.08); display: flex; flex-direction: column; cursor: pointer; border: 1px solid #e0e0e0; }
-.album-img-wrapper { position: relative; aspect-ratio: 1; overflow: hidden; background: #f5f5f5; }
-.album-item img { width: 100%; height: 100%; object-fit: cover; }
+.album-grid { 
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
+  gap: 12px; 
+  margin-top: 15px; 
+}
+.album-item { 
+  position: relative; 
+  border-radius: 8px; 
+  overflow: hidden; 
+  background: white; 
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08); 
+  display: flex; 
+  flex-direction: column; 
+  cursor: pointer; 
+  border: 1px solid #e0e0e0; 
+}
+.album-img-wrapper { 
+  position: relative; 
+  aspect-ratio: 1; 
+  overflow: hidden; 
+  background: #f5f5f5; 
+}
+.album-item img { 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+}
 .album-info { padding: 8px; }
-.album-name { font-weight: bold; font-size: 1rem; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; color: #333; }
+.album-name { 
+  font-weight: bold; 
+  font-size: 1rem; 
+  display: block; 
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  margin-bottom: 2px; 
+  color: #333; 
+}
 .album-date { font-size: 0.8rem; color: #757575; }
 
-.add-photo-btn { background: linear-gradient(135deg, #4caf50, #2e7d32); color: white; border: none; padding: 14px; border-radius: 12px; width: 100%; font-size: 1.2rem; font-weight: bold; cursor: pointer; margin-bottom: 12px; min-height: 60px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.add-photo-btn { 
+  background: linear-gradient(135deg, #4caf50, #2e7d32); 
+  color: white; 
+  border: none; 
+  padding: 14px; 
+  border-radius: 12px; 
+  width: 100%; 
+  font-size: 1.2rem; 
+  font-weight: bold; 
+  cursor: pointer; 
+  margin-bottom: 12px; 
+  min-height: 60px; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 8px; 
+}
 
-.del-btn { position: absolute; top: 6px; right: 6px; background: rgba(0,0,0,0.7); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 18px; z-index: 10; cursor: pointer; }
+.del-btn { 
+  position: absolute; 
+  top: 6px; 
+  right: 6px; 
+  background: rgba(0,0,0,0.7); 
+  color: white; 
+  border: none; 
+  border-radius: 50%; 
+  width: 30px; 
+  height: 30px; 
+  font-size: 18px; 
+  z-index: 10; 
+  cursor: pointer; 
+}
+
+/* 拡大オーバーレイ（修正版） */
+.overlay { 
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100vw; 
+  height: 100vh; 
+  background: rgba(0,0,0,0.95); 
+  z-index: 10000; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.overlay.active { 
+  opacity: 1;
+  visibility: visible;
+}
+
+.overlay-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay-image {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+  border: 2px solid white;
+  border-radius: 5px;
+  box-shadow: 0 5px 30px rgba(0,0,0,0.5);
+}
+
+.close-overlay-btn { 
+  position: fixed; 
+  top: 20px; 
+  right: 20px; 
+  width: 60px; 
+  height: 60px; 
+  border-radius: 50%; 
+  background: rgba(255,255,255,0.95); 
+  border: none; 
+  font-weight: bold; 
+  font-size: 2rem; 
+  z-index: 10001; 
+  cursor: pointer; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease;
+}
+.close-overlay-btn:hover {
+  transform: scale(1.1);
+}
+.close-overlay-btn:active {
+  transform: scale(0.95);
+}
+.close-overlay-btn small { 
+  font-size: 0.7rem; 
+  margin-top: 2px; 
+}
 
 /* 指導員用パネル */
 .teacher-panel { 
@@ -276,14 +530,6 @@ body { font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "游ゴシッ�
 .close-btn:hover {
   background: #3d8b40;
 }
-
-/* 拡大オーバーレイ */
-.overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 10000; display: none; }
-.overlay.active { display: block; }
-.overlay-content { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 15px; }
-.overlay-image { max-width: 100%; max-height: 100%; object-fit: contain; }
-.close-overlay-btn { position: fixed; top: 10px; right: 10px; width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.95); border: none; font-weight: bold; font-size: 1.6rem; z-index: 10001; cursor: pointer; }
-.close-overlay-btn small { font-size: 0.6rem; margin-top: 2px; }
 
 /* 回転警告メッセージ */
 .rotation-warning { 
@@ -522,12 +768,112 @@ let teacherLongPressTimer = null;
 let teacherTapCount = 0;
 let teacherDoubleTapTimer = null;
 
+// 拡大写真の状態管理
+let currentOverlay = null;
+let overlayKeydownHandler = null;
+
 const navButtons = document.getElementById('navButtons');
 const content = document.getElementById('content');
 const rotationWarning = document.getElementById('rotationWarning');
 const progressBar = document.getElementById('progressBar');
 const progressBarContainer = document.getElementById('progressBarContainer');
 const teacherPanel = document.getElementById('teacherPanel');
+
+// ================= 拡大写真機能（修正版） =================
+function openOverlay(src) {
+  // 既存のオーバーレイがあれば閉じる
+  closeOverlay();
+  
+  // 新しいオーバーレイを作成
+  currentOverlay = document.createElement('div');
+  currentOverlay.className = 'overlay';
+  currentOverlay.setAttribute('role', 'dialog');
+  currentOverlay.setAttribute('aria-modal', 'true');
+  currentOverlay.setAttribute('aria-label', '拡大画像');
+  
+  currentOverlay.innerHTML = `
+    <div class="overlay-content">
+      <img src="${src}" class="overlay-image" alt="作業の参考写真（拡大表示）">
+    </div>
+    <button class="close-overlay-btn" onclick="closeOverlay()" aria-label="閉じる">
+      ×<br><small>とじる</small>
+    </button>
+  `;
+
+  // bodyに追加
+  document.body.appendChild(currentOverlay);
+  
+  // スクロールを無効化
+  document.documentElement.style.overflow = 'hidden';
+  document.body.style.overflow = 'hidden';
+  
+  // アニメーションを開始
+  setTimeout(() => {
+    currentOverlay.classList.add('active');
+    // 閉じるボタンにフォーカスを移動
+    const closeBtn = currentOverlay.querySelector('.close-overlay-btn');
+    if (closeBtn) closeBtn.focus();
+  }, 10);
+  
+  // オーバーレイ背景クリックで閉じる
+  currentOverlay.addEventListener('click', function(e) {
+    if (e.target === this || e.target.classList.contains('overlay-content')) {
+      closeOverlay();
+    }
+  });
+  
+  // ESCキーで閉じる
+  overlayKeydownHandler = function(e) {
+    if (e.key === 'Escape') {
+      closeOverlay();
+    }
+  };
+  document.addEventListener('keydown', overlayKeydownHandler);
+  
+  // タッチデバイスでピンチズームを防止
+  currentOverlay.addEventListener('touchmove', function(e) {
+    if (e.touches.length > 1) {
+      e.preventDefault();
+    }
+  }, { passive: false });
+  
+  return false;
+}
+
+function closeOverlay() {
+  if (!currentOverlay) return;
+  
+  // アニメーションのためにactiveクラスを削除
+  currentOverlay.classList.remove('active');
+  
+  // アニメーション終了後に完全に削除
+  setTimeout(() => {
+    if (currentOverlay && currentOverlay.parentNode) {
+      currentOverlay.parentNode.removeChild(currentOverlay);
+    }
+    currentOverlay = null;
+    
+    // スクロールを有効化
+    document.documentElement.style.overflow = '';
+    document.body.style.overflow = '';
+    
+    // イベントリスナーを削除
+    if (overlayKeydownHandler) {
+      document.removeEventListener('keydown', overlayKeydownHandler);
+      overlayKeydownHandler = null;
+    }
+  }, 300);
+}
+
+function createPhotoElement(imgSrc, altText) {
+  return `
+    <div class="photo-container" onclick="openOverlay('${imgSrc}'); return false;">
+      <img src="${imgSrc}" class="step-image" alt="${altText}" loading="lazy"
+           onerror="this.style.display='none'">
+      <div class="tap-label">タップで拡大</div>
+    </div>
+  `;
+}
 
 // ================= 進捗管理 =================
 function saveProgress() {
@@ -849,16 +1195,6 @@ function isValidImagePath(path) {
   return path && path.trim() !== '';
 }
 
-function createPhotoElement(imgSrc, altText) {
-  return `
-    <div class="photo-container" onclick="openOverlay('${imgSrc}')">
-      <img src="${imgSrc}" class="step-image" alt="${altText}" loading="lazy"
-           onerror="this.style.display='none'">
-      <div class="tap-label">タップで拡大</div>
-    </div>
-  `;
-}
-
 function createDetailLines(detailAction) {
   const lines = detailAction.split('<br>').map(line => line.trim());
   return lines.map(line => {
@@ -935,10 +1271,11 @@ function renderKidsCompleteArea(stepIndex) {
       
       <div class="teacher-note">
         <strong>👨‍🏫 指導員用メモ：</strong><br>
-        ・子どもが「できた！」と思ったらボタンを押させてください<br>
-        ・押した直後5秒間は長押しで取消可能です<br>
-        ・全員が押すと次の工程に進めます<br>
-        ・早く終わった子は遅い子を手伝うよう促してください
+        1. まず写真を見せて完成イメージを共有しましょう<br>
+        2. 写真を見ながら工作を進めさせてください<br>
+        3. 完成したら「できました！」ボタンを押させてください<br>
+        4. 押した直後5秒間は長押しで取消可能です<br>
+        5. 全員が押すと次の工程に進めます
       </div>
     </div>
   `;
@@ -1066,17 +1403,20 @@ function renderStepView(s) {
         ` : ''}
       </div>
       
-      ${renderKidsCompleteArea(stepIndex)}
-      
+      <!-- 📸 写真セクションを先に表示 -->
       <div class="photo-section">
         <div class="photo-title">
           <span class="icon">📸</span>
-          <span>作業の参考写真</span>
+          <span>作業の参考写真（タップで拡大）</span>
         </div>
         ${photoCount > 0 ? `<div class="photo-list">${photoHtml}</div>` : 
           '<p style="text-align:center; color:#78909c; padding:15px;">写真はありません</p>'}
-        ${photoCount > 0 ? '<p style="text-align:center; color:#78909c; font-size:0.9rem; margin-top:8px;">タップで拡大できます</p>' : ''}
+        ${photoCount > 0 ? 
+          '<p style="text-align:center; color:#546e7a; font-size:0.9rem; margin-top:8px;">写真を見て確認してから作業しましょう</p>' : ''}
       </div>
+      
+      <!-- ✅ 完了ボタンは写真の後に -->
+      ${renderKidsCompleteArea(stepIndex)}
     </div>`;
 }
 
@@ -1185,26 +1525,6 @@ function deletePhoto(timestamp) {
   render();
 }
 
-// ================= 拡大機能 =================
-function openOverlay(src) {
-  if (document.querySelector('.overlay')) return;
-
-  const overlay = document.createElement('div');
-  overlay.className = 'overlay';
-  overlay.innerHTML = `
-    <div class="overlay-content">
-      <img src="${src}" class="overlay-image">
-    </div>
-    <button class="close-overlay-btn" onclick="this.parentElement.remove()">
-      ×<br><small>とじる</small>
-    </button>
-  `;
-
-  document.body.appendChild(overlay);
-  setTimeout(() => overlay.classList.add('active'), 10);
-  document.body.style.overflow = 'hidden';
-}
-
 // ================= 初期化 =================
 window.addEventListener('DOMContentLoaded', () => {
   initOrientationLock();
@@ -1216,10 +1536,7 @@ window.addEventListener('DOMContentLoaded', () => {
 // キーボード操作サポート
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    if (document.querySelector('.overlay')) {
-      document.querySelector('.overlay').remove();
-      document.body.style.overflow = '';
-    }
+    closeOverlay();
     if (teacherPanel.classList.contains('active')) {
       hideTeacherPanel();
     }
@@ -1229,18 +1546,20 @@ document.addEventListener('keydown', (e) => {
 console.log(`
 👨‍🏫 工作指導アプリ 完成版！
 特徴：
-1. ✅ 子ども用大型完了ボタン（5秒間取消可能）
-2. ⏰ 長押し取消機能（0.8秒長押し）
-3. 🔒 指導員用隠し機能（進捗バー3秒長押し→ダブルタップ）
-4. 👨‍🏫 指導員用管理パネル（進捗手動調整可能）
-5. 🎯 ワンチーム方式（4人全員完了で次へ）
-6. 📸 写真拡大・アルバム機能
+1. 📸✅ 写真→完了ボタンの自然な流れ
+2. 🔧 拡大写真機能のバグ修正完了
+3. ⏰ 子ども用長押し取消機能（0.8秒）
+4. 🔒 指導員用隠し機能（進捗バー3秒長押し→ダブルタップ）
+5. 👨‍🏫 指導員用管理パネル
+6. 🎯 ワンチーム方式（4人全員完了で次へ）
 7. ⏱️ 時間目安表示
 
-隠し機能の使い方：
-1. 進捗バー（色のついたバー）を3秒間長押し
-2. バーがオレンジ色になったら、2秒以内にダブルタップ
-3. 指導員用管理パネルが開きます！
+拡大写真の修正内容：
+・オーバーレイ閉じた後のスクロール問題を解決
+・ESCキーでの閉じる機能を追加
+・背景クリックでの閉じる機能を追加
+・適切な状態管理とクリーンアップ
+・アニメーションの改善
 `);
 </script>
 </body>

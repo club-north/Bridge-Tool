@@ -1208,6 +1208,11 @@ let zoomState = {
 };
 let hintTimeout = null;
 
+// カメラ撮影用グローバル変数（新規追加）
+let cameraInput = null;
+let currentPhotoName = '';
+let isProcessingPhoto = false;
+
 const navButtons = document.getElementById('navButtons');
 const content = document.getElementById('content');
 const rotationWarning = document.getElementById('rotationWarning');
@@ -2137,79 +2142,135 @@ function renderStepView(s) {
     </div>`;
 }
 
-// ================= アルバム機能 =================
-function savePhoto(event) {
-  const file = event.target.files[0];
-  if (!file) return;
+// ================= アルバム機能（完全修正版） =================
+// 古いsavePhoto関数は削除し、新しい実装に置き換え
 
-  const workName = prompt("工作の「なまえ」を教えてね！\n（例：はじめての電気自動車）", "じぶんの工作");
-  if (workName === null) return;
-
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const savedPhotos = JSON.parse(localStorage.getItem('myAlbumV3') || '[]');
-    const newItem = {
-      dataUrl: e.target.result,
-      name: workName,
-      timestamp: Date.now()
-    };
-    savedPhotos.push(newItem);
-    localStorage.setItem('myAlbumV3', JSON.stringify(savedPhotos));
-    render();
-    
-    alert(`🎉 「${workName}」をアルバムに保存しました！`);
-  };
-  reader.readAsDataURL(file);
-}
-
-// ================= カメラ撮影関数（新規追加） =================
+// ================= カメラ撮影関数（完全修正版） =================
 function takePhoto() {
-  const workName = prompt("工作の「なまえ」を教えてね！\n（例：はじめての電気自動車）", "じぶんの工作");
-  if (workName === null) return;
-
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = 'image/*';
-  
-  // デバイスに応じたカメラ設定
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  if (isMobile) {
-    input.capture = 'environment'; // スマホは背面カメラ
-  } else {
-    input.capture = 'user'; // PC/タブレットは前面カメラ
+  // 連続クリック防止
+  if (isProcessingPhoto) {
+    console.log('写真処理中です。しばらくお待ちください。');
+    return;
   }
   
-  input.onchange = function(e) {
-    const file = e.target.files[0];
-    if (!file) {
-      console.log('写真が選択されませんでした');
-      return;
+  const workName = prompt("工作の「なまえ」を教えてね！\n（例：はじめての電気自動車）", "じぶんの工作");
+  if (workName === null) return;
+  
+  currentPhotoName = workName;
+  isProcessingPhoto = true;
+  
+  // カメラinput要素の初期化
+  initCameraInput();
+  
+  // input要素の値を完全にリセット
+  if (cameraInput) {
+    // 古いイベントリスナーを削除
+    cameraInput.onchange = null;
+    cameraInput.onclick = null;
+    
+    // 新しいイベントリスナーを設定
+    cameraInput.onchange = handlePhotoSelection;
+    
+    // 値をリセット（重要！）
+    cameraInput.value = '';
+    
+    // クリックイベントを発火
+    setTimeout(() => {
+      cameraInput.click();
+    }, 100);
+  }
+}
+
+// カメラinput要素の初期化
+function initCameraInput() {
+  if (!cameraInput) {
+    cameraInput = document.createElement('input');
+    cameraInput.id = 'camera-input-element';
+    cameraInput.type = 'file';
+    cameraInput.accept = 'image/*';
+    cameraInput.style.display = 'none';
+    
+    // デバイスに応じたカメラ設定
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile) {
+      cameraInput.capture = 'environment'; // スマホは背面カメラ
+    } else {
+      cameraInput.capture = 'user'; // PC/タブレットは前面カメラ
     }
     
-    // ファイルの検証
-    if (!file.type.startsWith('image/')) {
-      alert('画像ファイルを選択してください。');
-      return;
-    }
-    
-    const reader = new FileReader();
-    reader.onload = function(e) {
+    document.body.appendChild(cameraInput);
+  }
+}
+
+// 写真選択処理
+function handlePhotoSelection(e) {
+  const file = e.target.files[0];
+  if (!file) {
+    console.log('写真が選択されませんでした');
+    isProcessingPhoto = false;
+    return;
+  }
+  
+  // ファイルの検証
+  if (!file.type.startsWith('image/')) {
+    alert('画像ファイルを選択してください。');
+    isProcessingPhoto = false;
+    return;
+  }
+  
+  // ファイルサイズ制限（10MB）
+  const maxSize = 10 * 1024 * 1024;
+  if (file.size > maxSize) {
+    alert('ファイルサイズが大きすぎます。10MB以下の画像を選択してください。');
+    isProcessingPhoto = false;
+    return;
+  }
+  
+  const reader = new FileReader();
+  
+  reader.onload = function(e) {
+    try {
       const savedPhotos = JSON.parse(localStorage.getItem('myAlbumV3') || '[]');
       const newItem = {
         dataUrl: e.target.result,
-        name: workName,
-        timestamp: Date.now()
+        name: currentPhotoName,
+        timestamp: Date.now(),
+        size: file.size,
+        type: file.type
       };
       savedPhotos.push(newItem);
       localStorage.setItem('myAlbumV3', JSON.stringify(savedPhotos));
+      
+      // 成功メッセージ
+      alert(`🎉 「${currentPhotoName}」をアルバムに保存しました！\nサイズ: ${Math.round(file.size/1024)}KB`);
+      
+      // 画面を更新
       render();
       
-      alert(`🎉 「${workName}」をアルバムに保存しました！`);
-    };
-    reader.readAsDataURL(file);
+      // 状態をリセット
+      currentPhotoName = '';
+      isProcessingPhoto = false;
+      
+      // 重要：input要素の値をリセット（連続撮影のために必須）
+      if (cameraInput) {
+        cameraInput.value = '';
+        // イベントリスナーを一時的に削除して再設定
+        cameraInput.onchange = null;
+      }
+      
+    } catch (error) {
+      console.error('保存エラー:', error);
+      alert('保存に失敗しました。もう一度お試しください。');
+      isProcessingPhoto = false;
+    }
   };
   
-  input.click();
+  reader.onerror = function() {
+    alert('ファイルの読み込みに失敗しました。');
+    isProcessingPhoto = false;
+  };
+  
+  reader.readAsDataURL(file);
 }
 
 function deletePhoto(timestamp) {
@@ -2271,7 +2332,8 @@ function renderAlbumView(s) {
             1. 「写真をとる・えらぶ」をタップ<br>
             2. 工作の「なまえ」を入力<br>
             3. 写真を撮影または選択<br>
-            4. アルバムに自動保存されます
+            4. アルバムに自動保存されます<br>
+            5. 連続で撮影したい場合は、もう一度ボタンを押してください
           </div>
         </details>
       </div>
@@ -2281,9 +2343,9 @@ function renderAlbumView(s) {
           ${albumMessage}
         </p>
         
-        <button class="add-photo-btn" onclick="takePhoto()">
+        <button class="add-photo-btn" onclick="takePhoto()" ${isProcessingPhoto ? 'disabled style="opacity:0.7"' : ''}>
           <span>📷</span>
-          <span>写真をとる・えらぶ</span>
+          <span>${isProcessingPhoto ? '処理中...' : '写真をとる・えらぶ'}</span>
         </button>
         
         ${albumCount > 0 ? `<div class="album-grid">${albumHtml}</div>` : ''}
@@ -2309,8 +2371,22 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
+// ページを離れる前のクリーンアップ
+window.addEventListener('beforeunload', () => {
+  if (cameraInput && cameraInput.parentNode) {
+    cameraInput.parentNode.removeChild(cameraInput);
+  }
+});
+
 console.log(`
-🎯 工作指導アプリ - レスポンシブ完全版！
+🎯 工作指導アプリ - 完全修正版！
+
+📸 カメラ機能改善：
+• 連続撮影が可能に
+• input要素の値を毎回リセット
+• 処理中の状態管理
+• エラーハンドリング強化
+• ファイルサイズ制限
 
 📱 スマホ向け改善：
 • フルレスポンシブデザイン
@@ -2318,32 +2394,13 @@ console.log(`
 • ダブルタップでズーム切り替え
 • ドラッグ移動機能
 • 自動ヒント表示
-• 適切なカーソル表示
 
-🖥️ PC向け機能：
-• Ctrl+ホイールズーム
-• マウスドラッグ移動
-• ダブルクリックズーム
-
-📐 レスポンシブ対応：
-• clamp()関数で流動的な文字サイズ
-• メディアクエリで端末別最適化
-• 縦向き/横向き対応
-• 高解像度ディスプレイ対応
-• ダークモード対応
-
-✨ 拡張機能：
-• ズームインジケーター
-• リセットボタン
-• 操作ヒントの自動非表示
-• 触覚フィードバック
-• アクセシビリティ対応
-
-🎨 デザイン：
-• スムーズなアニメーション
-• タッチフレンドリーなUI
-• 視覚的フィードバック
-• 一貫したデザイン言語
+✨ 修正ポイント：
+1. グローバルなcameraInput要素を1つだけ使用
+2. 毎回input.value = ''で値をリセット
+3. isProcessingPhotoフラグで連続クリック防止
+4. イベントリスナーの適切な管理
+5. メモリリーク防止のためのクリーンアップ
 `);
 </script>
 </body>
